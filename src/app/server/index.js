@@ -3,8 +3,10 @@
 var express = require('express');
 var server = require('./server');
 
-const PORT = 8002;
+const PORT = process.env.PORT || 3000;
 
-express().use('/demo/checkout', server()).listen(PORT, function() {
-    console.log(`Server started at http://localhost:${PORT}/demo/checkout`);
+express().use('/', server()).listen(PORT, function() {
+    if (process.env.NODE_ENV === "development") {
+      console.log(`Server started at http://localhost:${PORT}/demo/checkout`);
+    }
 });
