@@ -14,93 +14,101 @@ export let responsive = {
     ),
 
     code: (ctx) => `
-        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+        <!DOCTYPE html>
 
-        <style>
-            
-            /* Media query for mobile viewport */
-            @media screen and (max-width: 400px) {
-                #paypal-button-container {
-                    width: 100%;
-                }
-            }
-            
-            /* Media query for desktop viewport */
-            @media screen and (min-width: 400px) {
-                #paypal-button-container {
-                    width: 250px;
-                    display: inline-block;
-                }
-            }
-            
-        </style>
-        
-        <div id="paypal-button-container"></div>
-        
-        <script>
-        
-            paypal.Button.render({
+        <head>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+        </head>
+
+        <body>
+
+            <style>
                 
-                // Set your environment
-        
-                env: '${ctx.env}', // sandbox | production
-        
-                // Specify the style of the button
-        
-                style: {
-                    label: 'checkout',  // checkout | credit | pay | buynow | generic
-                    size:  'responsive', // small | medium | large | responsive
-                    shape: 'pill',   // pill | rect
-                    color: 'gold'   // gold | blue | silver | black
-                },
-        
-                // Wait for the PayPal button to be clicked
+                /* Media query for mobile viewport */
+                @media screen and (max-width: 400px) {
+                    #paypal-button-container {
+                        width: 100%;
+                    }
+                }
                 
-                payment: function(data, actions) {
-
-                    // Set up a url on your server to create the payment
-                    var CREATE_URL = '${ctx.baseURL}/api/paypal/payment/create/';
-                    
-                    var data = {
-                        payment: {
-                            transactions: [
-                                {
-                                    amount: { total: '0.01', currency: 'USD' }
-                                }
-                            ]
-                        }
-                    };
-                    
-                    // Make a call to your server to set up the payment
-                    return paypal.request.post(CREATE_URL, data)
-                        .then(function(res) {
-                            return res.paymentID;
-                        });
-                },
-
-                // Wait for the payment to be authorized by the customer
-
-                onAuthorize: function(data, actions) {
-
-                    // Set up a url on your server to execute the payment
-                    var EXECUTE_URL = '${ctx.baseURL}/api/paypal/payment/execute/';
-
-                    // Set up the data you need to pass to your server
-                    var data = {
-                        paymentID: data.paymentID,
-                        payerID: data.payerID
-                    };
-
-                    // Make a call to your server to execute the payment
-                    return paypal.request.post(EXECUTE_URL, data)
-                        .then(function (res) {
-                            window.alert('Payment Complete!');
-                        });
-                },
+                /* Media query for desktop viewport */
+                @media screen and (min-width: 400px) {
+                    #paypal-button-container {
+                        width: 250px;
+                        display: inline-block;
+                    }
+                }
+                
+            </style>
             
-            }, '#paypal-button-container');
-        
-        </script>
-
+            <div id="paypal-button-container"></div>
+            
+            <script>
+            
+                paypal.Button.render({
+                    
+                    // Set your environment
+            
+                    env: '${ctx.env}', // sandbox | production
+            
+                    // Specify the style of the button
+            
+                    style: {
+                        label: 'checkout',  // checkout | credit | pay | buynow | generic
+                        size:  'responsive', // small | medium | large | responsive
+                        shape: 'pill',   // pill | rect
+                        color: 'gold'   // gold | blue | silver | black
+                    },
+            
+                    // Wait for the PayPal button to be clicked
+                    
+                    payment: function(data, actions) {
+    
+                        // Set up a url on your server to create the payment
+                        var CREATE_URL = '${ctx.baseURL}/api/paypal/payment/create/';
+                        
+                        var data = {
+                            payment: {
+                                transactions: [
+                                    {
+                                        amount: { total: '0.01', currency: 'USD' }
+                                    }
+                                ]
+                            }
+                        };
+                        
+                        // Make a call to your server to set up the payment
+                        return paypal.request.post(CREATE_URL, data)
+                            .then(function(res) {
+                                return res.paymentID;
+                            });
+                    },
+    
+                    // Wait for the payment to be authorized by the customer
+    
+                    onAuthorize: function(data, actions) {
+    
+                        // Set up a url on your server to execute the payment
+                        var EXECUTE_URL = '${ctx.baseURL}/api/paypal/payment/execute/';
+    
+                        // Set up the data you need to pass to your server
+                        var data = {
+                            paymentID: data.paymentID,
+                            payerID: data.payerID
+                        };
+    
+                        // Make a call to your server to execute the payment
+                        return paypal.request.post(EXECUTE_URL, data)
+                            .then(function (res) {
+                                window.alert('Payment Complete!');
+                            });
+                    },
+                
+                }, '#paypal-button-container');
+            
+            </script>
+        </body>
     `
 };

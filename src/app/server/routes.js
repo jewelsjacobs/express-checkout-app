@@ -12,7 +12,7 @@ module.exports = function (app) {
 
     app.get('/', (req, res) => {
 
-        res.header('Content-Security-Policy', `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https://*.paypal.com https://*.paypalobjects.com https://*.braintreegateway.com https://dxjs.apimatic.io/static/js/portal.v2.js https://apimatic.io https://apidocs.io https://polyfill.io/v2/polyfill.js`);
+        res.header('Content-Security-Policy', `default-src 'self' 'unsafe-inline' 'unsafe-eval' data: https://*.paypal.com https://*.paypalobjects.com https://*.braintreegateway.com https://dxjs.apimatic.io/static/js/portal.v2.js https://jewelsjacobs.github.io https://apimatic.io https://apidocs.io https://polyfill.io/v2/polyfill.js`);
 
         res.send(index({
             baseURL: req.baseUrl,

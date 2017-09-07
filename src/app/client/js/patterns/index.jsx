@@ -1,5 +1,4 @@
 
-export * from './server';
 export * from './checkout';
 export * from './credit';
 export * from './pay';

@@ -22,12 +22,6 @@ module.exports = function(ctx) {
         <body data-csrf="${ ctx.csrf || '' }" data-base-url="${ctx.baseURL}">
             <div id="app" class="app"></div>
             <script src="${ctx.baseURL}/static/js/demo.js"></script>
-            <script type="text/javascript">
-              var script = document.createElement("script");
-              script.src="https://dxjs.apimatic.io/static/js/portal.v2.js";
-              script.onload = function() { APIMaticDevPortal.show({ container: "apimatic-widget", apiKey: "UWvH4d7OO4tm1MN19Gr1DY4k11SAzxF0_-um3owOSZjgNdotiaTur76l77u_OweK", baseTheme: "light" }); };
-               document.getElementsByTagName("head")[0].appendChild(script);
-            </script>
         </body>
     `;
 };

@@ -281,6 +281,15 @@ a.active .bullet {
     height: 100%;
 }
 
+.app .main .column-right-wide {
+    width: 85%;
+    background: white;
+    display: table-cell;
+    box-sizing: border-box;
+    vertical-align: top;
+    height: 100%;
+}
+
 .app .main .column-right .editor {
     width: 100%;
     height: 100%;
