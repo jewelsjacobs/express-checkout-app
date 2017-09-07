@@ -1,5 +1,8 @@
 # PayPal Checkout Integration Patterns Demo WebApp
 
+## Demo on heroku
+[https://express-checkout-app.herokuapp.com/#/pattern/server](https://express-checkout-app.herokuapp.com/#/pattern/server)
+
 ## Description
 
 The demo web application is a React app that shows different styles of PayPal integrations. It uses the wonderful [Ace Code Editor](https://github.com/ajaxorg/ace) to provide a live demonstration HTML and Javascript code which you can tweak and see rendered on the page.

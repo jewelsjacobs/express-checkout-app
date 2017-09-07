@@ -1,10 +1,9 @@
 
-export * from './client';
 export * from './server';
-export * from './braintree';
 export * from './checkout';
 export * from './credit';
 export * from './pay';
+export * from './api';
 export * from './buynow';
 export * from './generic';
 export * from './responsive';

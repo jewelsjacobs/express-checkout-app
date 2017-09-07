@@ -9,6 +9,8 @@ export let confirm = {
 
     fullName: `Express Checkout with Confirmation`,
 
+    nosidebar: false,
+
     intro: (
         <p>Create a PayPal button and accept payments, with a confirmation page.</p>
     ),
@@ -35,13 +37,11 @@ export let confirm = {
 
                 env: '${ctx.env}', // sandbox | production
 
-                client: {
-                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
-                    production: '<insert production client id>'
-                },
-
                 payment: function(data, actions) {
-                    return actions.payment.create({
+                    // Set up a url on your server to create the payment
+                    var CREATE_URL = '${ctx.baseURL}/api/paypal/payment/create/';
+                    
+                    var data = {
                         payment: {
                             transactions: [
                                 {
@@ -49,12 +49,27 @@ export let confirm = {
                                 }
                             ]
                         }
-                    });
+                    };
+                    
+                    // Make a call to your server to set up the payment
+                    return paypal.request.post(CREATE_URL, data)
+                        .then(function(res) {
+                            return res.paymentID;
+                        });
                 },
 
                 // Wait for the payment to be authorized by the customer
 
                 onAuthorize: function(data, actions) {
+                  
+                    // Set up a url on your server to execute the payment
+                    var EXECUTE_URL = '${ctx.baseURL}/api/paypal/payment/execute/';
+
+                    // Set up the data you need to pass to your server
+                    var data = {
+                        paymentID: data.paymentID,
+                        payerID: data.payerID
+                    };
 
                     // Get the payment details
 
@@ -83,17 +98,17 @@ export let confirm = {
                             document.querySelector('#confirm').innerText = 'Loading...';
                             document.querySelector('#confirm').disabled = true;
 
-                            // Execute the payment
-
-                            return actions.payment.execute().then(function() {
-
+                            // Make a call to your server to execute the payment
+                            return paypal.request.post(EXECUTE_URL, data).then(function (res) {
+                            
                                 // Show a thank-you note
-
+                                
                                 document.querySelector('#thanksname').innerText = shipping.recipient_name;
 
                                 document.querySelector('#confirm').style.display = 'none';
                                 document.querySelector('#thanks').style.display = 'block';
                             });
+
                         });
                     });
                 }
@@ -101,5 +116,5 @@ export let confirm = {
             }, '#paypal-button-container');
 
         </script>
-    `
+        `
 };

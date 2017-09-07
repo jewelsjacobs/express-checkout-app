@@ -1,63 +1,73 @@
 
 import React from 'react';
 
-export let responsive = {
+export let api = {
 
-    slug: 'responsive',
+    slug: 'api',
 
-    name: `Responsive Button`,
+    name: `Payment API & SDKs`,
 
-    fullName: `Express Checkout Custom Button with size as Responsive`,
+    fullName: `Payment API & SDKs`,
+
+    nosidebar: false,
 
     intro: (
-        <p>If you set size: 'responsive', the button will match the width of the parent element, and auto-calculate an appropriate height based on the width.</p>
+        <p>Payment API & SDKs</p>
     ),
 
     code: (ctx) => `
         <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-
-        <style>
-            
-            /* Media query for mobile viewport */
-            @media screen and (max-width: 400px) {
-                #paypal-button-container {
-                    width: 100%;
-                }
-            }
-            
-            /* Media query for desktop viewport */
-            @media screen and (min-width: 400px) {
-                #paypal-button-container {
-                    width: 250px;
-                    display: inline-block;
-                }
-            }
-            
-        </style>
-        
+    
+        <p id="msg" class="hidden error">Please check the checkbox</p>
+    
+        <p>
+            <label><input id="check" type="checkbox"> Check here to continue</label>
+        </p>
+    
         <div id="paypal-button-container"></div>
-        
+    
         <script>
-        
+    
+            function isValid() {
+                return document.querySelector('#check').checked;
+            }
+    
+            function onChangeCheckbox(handler) {
+                document.querySelector('#check').addEventListener('change', handler);
+            }
+    
+            function toggleValidationMessage() {
+                document.querySelector('#msg').style.display = (isValid() ? 'none' : 'block');
+            }
+    
+            function toggleButton(actions) {
+                return isValid() ? actions.enable() : actions.disable();
+            }
+    
+            // Render the PayPal button
+    
             paypal.Button.render({
-                
+    
                 // Set your environment
-        
+    
                 env: '${ctx.env}', // sandbox | production
-        
-                // Specify the style of the button
-        
-                style: {
-                    label: 'checkout',  // checkout | credit | pay | buynow | generic
-                    size:  'responsive', // small | medium | large | responsive
-                    shape: 'pill',   // pill | rect
-                    color: 'gold'   // gold | blue | silver | black
+    
+                validate: function(actions) {
+                    toggleButton(actions);
+    
+                    onChangeCheckbox(function() {
+                        toggleButton(actions);
+                    });
                 },
-        
+    
+                onClick: function() {
+                    toggleValidationMessage();
+                },
+    
                 // Wait for the PayPal button to be clicked
-                
+    
                 payment: function(data, actions) {
-
+    
                     // Set up a url on your server to create the payment
                     var CREATE_URL = '${ctx.baseURL}/api/paypal/payment/create/';
                     
@@ -77,30 +87,29 @@ export let responsive = {
                             return res.paymentID;
                         });
                 },
-
+    
                 // Wait for the payment to be authorized by the customer
-
+    
                 onAuthorize: function(data, actions) {
-
+    
                     // Set up a url on your server to execute the payment
                     var EXECUTE_URL = '${ctx.baseURL}/api/paypal/payment/execute/';
-
+    
                     // Set up the data you need to pass to your server
                     var data = {
                         paymentID: data.paymentID,
                         payerID: data.payerID
                     };
-
+    
                     // Make a call to your server to execute the payment
                     return paypal.request.post(EXECUTE_URL, data)
                         .then(function (res) {
                             window.alert('Payment Complete!');
                         });
                 },
-            
+                
             }, '#paypal-button-container');
-        
+    
         </script>
-
-    `
+      `
 };

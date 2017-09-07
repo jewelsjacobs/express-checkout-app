@@ -9,6 +9,8 @@ export let buynow = {
 
     fullName: `Express Checkout Custom Buy Now Button`,
 
+    nosidebar: false,
+
     intro: (
         <p>Create a <b>Buy Now</b> button.</p>
     ),
@@ -39,32 +41,36 @@ export let buynow = {
                     color: 'gold'   // gold | blue | silve | black
                 },
 
-                // PayPal Client IDs - replace with your own
-                // Create a PayPal app: https://developer.paypal.com/developer/applications/create
+                // payment() is called when the button is clicked
+                payment: function() {
 
-                client: {
-                    sandbox:    'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R',
-                    production: '<insert production client id>'
+                    // Set up a url on your server to create the payment
+                    var CREATE_URL = '${ctx.baseURL}/api/paypal/payment/create/';
+
+                    // Make a call to your server to set up the payment
+                    return paypal.request.post(CREATE_URL)
+                        .then(function(res) {
+                            return res.paymentID;
+                        });
                 },
 
-                // Wait for the PayPal button to be clicked
-
-                payment: function(data, actions) {
-                    return actions.payment.create({
-                        transactions: [
-                            {
-                                amount: { total: '0.01', currency: 'USD' }
-                            }
-                        ]
-                    });
-                },
-
-                // Wait for the payment to be authorized by the customer
-
+                // onAuthorize() is called when the buyer approves the payment
                 onAuthorize: function(data, actions) {
-                    return actions.payment.execute().then(function() {
-                        window.alert('Payment Complete!');
-                    });
+
+                    // Set up a url on your server to execute the payment
+                    var EXECUTE_URL = '${ctx.baseURL}/api/paypal/payment/execute/';
+
+                    // Set up the data you need to pass to your server
+                    var data = {
+                        paymentID: data.paymentID,
+                        payerID: data.payerID
+                    };
+
+                    // Make a call to your server to execute the payment
+                    return paypal.request.post(EXECUTE_URL, data)
+                        .then(function (res) {
+                            window.alert('Payment Complete!');
+                        });
                 }
 
             }, '#paypal-button-container');

@@ -13876,7 +13876,7 @@ var _editor = __webpack_require__(243);
 
 var _code = __webpack_require__(242);
 
-var _patterns = __webpack_require__(258);
+var _patterns = __webpack_require__(257);
 
 var patterns = _interopRequireWildcard(_patterns);
 
@@ -13892,7 +13892,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var layout = [{
     name: 'Integration Types',
-    patterns: [patterns.client, patterns.server, patterns.braintree]
+    patterns: [patterns.server]
+}, {
+    name: 'API and SDKs',
+    patterns: [patterns.api]
 }, {
     name: 'Button Styles',
     patterns: [patterns.checkout, patterns.credit, patterns.pay, patterns.buynow, patterns.generic, patterns.responsive]
@@ -13924,7 +13927,7 @@ var App = exports.App = function (_React$Component) {
         var _this2 = this;
 
         if (window.location.hash === '#/') {
-            window.location.hash = '#/pattern/client';
+            window.location.hash = '#/pattern/server';
         }
 
         paypal.onPossiblyUnhandledException(function (err) {
@@ -13947,11 +13950,11 @@ var App = exports.App = function (_React$Component) {
     App.prototype.render = function render() {
         var _this3 = this;
 
-        var patternName = this.props.params.pattern || 'client';
+        var patternName = this.props.params.pattern || 'server';
         var activePattern = patterns[patternName];
 
         if (!activePattern) {
-            activePattern = patterns.client;
+            activePattern = patterns.server;
         }
 
         var env = this.state.env;
@@ -14001,70 +14004,74 @@ var App = exports.App = function (_React$Component) {
                         );
                     })
                 ),
-                _react2.default.createElement(
+                activePattern.slug === 'api' ? _react2.default.createElement('div', { id: 'apimatic-widget' }) : _react2.default.createElement(
                     'div',
-                    { className: 'column-middle' },
+                    null,
                     _react2.default.createElement(
                         'div',
-                        { className: 'intro' },
+                        { className: 'column-middle' },
                         _react2.default.createElement(
-                            'h3',
-                            null,
-                            activePattern.fullName
+                            'div',
+                            { className: 'intro' },
+                            _react2.default.createElement(
+                                'h3',
+                                null,
+                                activePattern.fullName
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'introp' },
+                                activePattern.intro
+                            )
                         ),
                         _react2.default.createElement(
                             'div',
-                            { className: 'introp' },
-                            activePattern.intro
+                            { className: 'demo' },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'steps' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'step right' },
+                                    '1. Edit the code'
+                                ),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'step bottom' },
+                                    '2. Try the button'
+                                ),
+                                this.state.errors.length ? _react2.default.createElement(
+                                    'div',
+                                    { className: 'errors' },
+                                    this.state.errors.map(function (err) {
+                                        return _react2.default.createElement(
+                                            'p',
+                                            { key: err },
+                                            err
+                                        );
+                                    })
+                                ) : _react2.default.createElement(_code.Code, {
+                                    setup: activePattern.setup,
+                                    pattern: patternName,
+                                    code: this.state.code,
+                                    onError: function onError(err) {
+                                        return _this3.onCodeError(err);
+                                    } }),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'step right' },
+                                    '3. Copy code to your site!'
+                                )
+                            )
                         )
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: 'demo' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'steps' },
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'step right' },
-                                '1. Edit the code'
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'step bottom' },
-                                '2. Try the button'
-                            ),
-                            this.state.errors.length ? _react2.default.createElement(
-                                'div',
-                                { className: 'errors' },
-                                this.state.errors.map(function (err) {
-                                    return _react2.default.createElement(
-                                        'p',
-                                        { key: err },
-                                        err
-                                    );
-                                })
-                            ) : _react2.default.createElement(_code.Code, {
-                                setup: activePattern.setup,
-                                pattern: patternName,
-                                code: this.state.code,
-                                onError: function onError(err) {
-                                    return _this3.onCodeError(err);
-                                } }),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'step right' },
-                                '3. Copy code to your site!'
-                            )
-                        )
+                        { className: 'column-right' },
+                        _react2.default.createElement(_editor.Editor, { code: activePattern.code({ env: env, baseURL: baseURL }), onChange: function onChange(val) {
+                                return _this3.onChangeCode(val);
+                            } })
                     )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'column-right' },
-                    _react2.default.createElement(_editor.Editor, { code: activePattern.code({ env: env, baseURL: baseURL }), onChange: function onChange(val) {
-                            return _this3.onChangeCode(val);
-                        } })
                 )
             )
         );
@@ -28008,7 +28015,7 @@ var Header = exports.Header = function (_React$Component) {
                 _react2.default.createElement(
                     'span',
                     null,
-                    'Checkout Integration Patterns'
+                    'Express Checkout Server Side REST Integration'
                 )
             ),
             _react2.default.createElement(_toggle.Toggle, { left: 'sandbox', right: 'production', 'default': 'left', onChange: this.props.onChangeEnv })
@@ -28238,7 +28245,7 @@ function debounce(method) {
 
 
 exports.__esModule = true;
-exports.braintree = undefined;
+exports.api = undefined;
 
 var _react = __webpack_require__(4);
 
@@ -28246,22 +28253,24 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var braintree = exports.braintree = {
+var api = exports.api = {
 
-    slug: 'braintree',
+    slug: 'api',
 
-    name: 'Braintree SDK',
+    name: 'Payment API & SDKs',
 
-    fullName: 'Express Checkout using Braintree SDK',
+    fullName: 'Payment API & SDKs',
+
+    nosidebar: false,
 
     intro: _react2.default.createElement(
         'p',
         null,
-        'Create a PayPal button and accept payments using a Braintree integration.'
+        'Payment API & SDKs'
     ),
 
     code: function code(ctx) {
-        return '\n        <!DOCTYPE html>\n\n        <head>\n            <meta http-equiv="X-UA-Compatible" content="IE=edge" />\n            <meta name="viewport" content="width=device-width, initial-scale=1">\n            <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n            <script src="https://js.braintreegateway.com/web/3.11.0/js/client.min.js"></script>\n            <script src="https://js.braintreegateway.com/web/3.11.0/js/paypal-checkout.min.js"></script>\n        </head>\n\n        <body>\n            <div id="paypal-button-container"></div>\n\n            <script>\n\n                var BRAINTREE_SANDBOX_AUTH = \'eyJ2ZXJzaW9uIjoyLCJhdXRob3JpemF0aW9uRmluZ2VycHJpbnQiOiJjMDFhZmRkM2Y1OTJmNWVhNTNlMzE5MWQwYmIyMWVjYjM5NzNlZGM1MzkwNDZiMjJmNTA2ODEyNzIzZmRlMTJifGNsaWVudF9pZD1jbGllbnRfaWQkc2FuZGJveCQ0ZHByYmZjNnBoNTk1Y2NqXHUwMDI2Y3JlYXRlZF9hdD0yMDE3LTA0LTI2VDIzOjI2OjU5Ljg3OTA3ODYwNiswMDAwXHUwMDI2bWVyY2hhbnRfaWQ9M3cydHR2d2QyNDY1NDhoZCIsImNvbmZpZ1VybCI6Imh0dHBzOi8vYXBpLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb206NDQzL21lcmNoYW50cy8zdzJ0dHZ3ZDI0NjU0OGhkL2NsaWVudF9hcGkvdjEvY29uZmlndXJhdGlvbiIsImNoYWxsZW5nZXMiOltdLCJlbnZpcm9ubWVudCI6InNhbmRib3giLCJjbGllbnRBcGlVcmwiOiJodHRwczovL2FwaS5zYW5kYm94LmJyYWludHJlZWdhdGV3YXkuY29tOjQ0My9tZXJjaGFudHMvM3cydHR2d2QyNDY1NDhoZC9jbGllbnRfYXBpIiwiYXNzZXRzVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhdXRoVXJsIjoiaHR0cHM6Ly9hdXRoLnZlbm1vLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhbmFseXRpY3MiOnsidXJsIjoiaHR0cHM6Ly9jbGllbnQtYW5hbHl0aWNzLnNhbmRib3guYnJhaW50cmVlZ2F0ZXdheS5jb20vM3cydHR2d2QyNDY1NDhoZCJ9LCJ0aHJlZURTZWN1cmVFbmFibGVkIjpmYWxzZSwicGF5cGFsRW5hYmxlZCI6dHJ1ZSwicGF5cGFsIjp7ImRpc3BsYXlOYW1lIjoiYmFyY28uMDMtZmFjaWxpdGF0b3JAZ21haWwuY29tIiwiY2xpZW50SWQiOiJBV3VZdnFnMGtaN2Y5S0V4TVpqZU53T3RjQV8yZVhnOWpMZy1QSnBGX0pnYk44M0YyVml5aEdnV2JCNDg4RGU3MFpucGRBZEI2TUNqekNqSyIsInByaXZhY3lVcmwiOiJodHRwczovL2V4YW1wbGUuY29tIiwidXNlckFncmVlbWVudFVybCI6Imh0dHBzOi8vZXhhbXBsZS5jb20iLCJiYXNlVXJsIjoiaHR0cHM6Ly9hc3NldHMuYnJhaW50cmVlZ2F0ZXdheS5jb20iLCJhc3NldHNVcmwiOiJodHRwczovL2NoZWNrb3V0LnBheXBhbC5jb20iLCJkaXJlY3RCYXNlVXJsIjpudWxsLCJhbGxvd0h0dHAiOnRydWUsImVudmlyb25tZW50Tm9OZXR3b3JrIjpmYWxzZSwiZW52aXJvbm1lbnQiOiJvZmZsaW5lIiwidW52ZXR0ZWRNZXJjaGFudCI6ZmFsc2UsImJyYWludHJlZUNsaWVudElkIjoibWFzdGVyY2xpZW50MyIsImJpbGxpbmdBZ3JlZW1lbnRzRW5hYmxlZCI6dHJ1ZSwibWVyY2hhbnRBY2NvdW50SWQiOiJVU0QiLCJjdXJyZW5jeUlzb0NvZGUiOiJVU0QifSwiY29pbmJhc2VFbmFibGVkIjpmYWxzZSwibWVyY2hhbnRJZCI6IjN3MnR0dndkMjQ2NTQ4aGQiLCJ2ZW5tbyI6Im9mZiJ9\';\n\n                // Render the PayPal button\n\n                paypal.Button.render({\n\n                    // Pass in the Braintree SDK\n\n                    braintree: braintree,\n\n                    // Pass in your Braintree authorization key\n\n                    client: {\n                        sandbox: BRAINTREE_SANDBOX_AUTH,\n                        production: \'<insert production auth key>\'\n                    },\n\n                    // Set your environment\n\n                    env: \'' + ctx.env + '\', // sandbox | production\n\n                    // Wait for the PayPal button to be clicked\n\n                    payment: function(data, actions) {\n\n                        // Make a call to create the payment\n\n                        return actions.payment.create({\n                            payment: {\n                                transactions: [\n                                    {\n                                        amount: { total: \'0.01\', currency: \'USD\' }\n                                    }\n                                ]\n                            }\n                        });\n                    },\n\n                    // Wait for the payment to be authorized by the customer\n\n                    onAuthorize: function(data, actions) {\n\n                        // Call your server with data.nonce to finalize the payment\n\n                        console.log(\'Braintree nonce:\', data.nonce);\n\n                        // Get the payment and buyer details\n\n                        return actions.payment.get().then(function(payment) {\n                            console.log(\'Payment details:\', payment);\n                        });\n                    }\n\n                }, \'#paypal-button-container\');\n\n            </script>\n        </body>\n    ';
+        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n    \n        <p id="msg" class="hidden error">Please check the checkbox</p>\n    \n        <p>\n            <label><input id="check" type="checkbox"> Check here to continue</label>\n        </p>\n    \n        <div id="paypal-button-container"></div>\n    \n        <script>\n    \n            function isValid() {\n                return document.querySelector(\'#check\').checked;\n            }\n    \n            function onChangeCheckbox(handler) {\n                document.querySelector(\'#check\').addEventListener(\'change\', handler);\n            }\n    \n            function toggleValidationMessage() {\n                document.querySelector(\'#msg\').style.display = (isValid() ? \'none\' : \'block\');\n            }\n    \n            function toggleButton(actions) {\n                return isValid() ? actions.enable() : actions.disable();\n            }\n    \n            // Render the PayPal button\n    \n            paypal.Button.render({\n    \n                // Set your environment\n    \n                env: \'' + ctx.env + '\', // sandbox | production\n    \n                validate: function(actions) {\n                    toggleButton(actions);\n    \n                    onChangeCheckbox(function() {\n                        toggleButton(actions);\n                    });\n                },\n    \n                onClick: function() {\n                    toggleValidationMessage();\n                },\n    \n                // Wait for the PayPal button to be clicked\n    \n                payment: function(data, actions) {\n    \n                    // Set up a url on your server to create the payment\n                    var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n                    \n                    var data = {\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    };\n                    \n                    // Make a call to your server to set up the payment\n                    return paypal.request.post(CREATE_URL, data)\n                        .then(function(res) {\n                            return res.paymentID;\n                        });\n                },\n    \n                // Wait for the payment to be authorized by the customer\n    \n                onAuthorize: function(data, actions) {\n    \n                    // Set up a url on your server to execute the payment\n                    var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n    \n                    // Set up the data you need to pass to your server\n                    var data = {\n                        paymentID: data.paymentID,\n                        payerID: data.payerID\n                    };\n    \n                    // Make a call to your server to execute the payment\n                    return paypal.request.post(EXECUTE_URL, data)\n                        .then(function (res) {\n                            window.alert(\'Payment Complete!\');\n                        });\n                },\n                \n            }, \'#paypal-button-container\');\n    \n        </script>\n      ';
     }
 };
 
@@ -28352,6 +28361,8 @@ var buynow = exports.buynow = {
 
     fullName: 'Express Checkout Custom Buy Now Button',
 
+    nosidebar: false,
+
     intro: _react2.default.createElement(
         'p',
         null,
@@ -28365,7 +28376,7 @@ var buynow = exports.buynow = {
     ),
 
     code: function code(ctx) {
-        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: \'buynow\',\n                    fundingicons: true, // optional\n                    branding: true, // optional\n                    size:  \'small\', // small | medium | large | responsive\n                    shape: \'rect\',   // pill | rect\n                    color: \'gold\'   // gold | blue | silve | black\n                },\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    \'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R\',\n                    production: \'<insert production client id>\'\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function(data, actions) {\n                    return actions.payment.create({\n                        transactions: [\n                            {\n                                amount: { total: \'0.01\', currency: \'USD\' }\n                            }\n                        ]\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        window.alert(\'Payment Complete!\');\n                    });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
+        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: \'buynow\',\n                    fundingicons: true, // optional\n                    branding: true, // optional\n                    size:  \'small\', // small | medium | large | responsive\n                    shape: \'rect\',   // pill | rect\n                    color: \'gold\'   // gold | blue | silve | black\n                },\n\n                // payment() is called when the button is clicked\n                payment: function() {\n\n                    // Set up a url on your server to create the payment\n                    var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n\n                    // Make a call to your server to set up the payment\n                    return paypal.request.post(CREATE_URL)\n                        .then(function(res) {\n                            return res.paymentID;\n                        });\n                },\n\n                // onAuthorize() is called when the buyer approves the payment\n                onAuthorize: function(data, actions) {\n\n                    // Set up a url on your server to execute the payment\n                    var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n\n                    // Set up the data you need to pass to your server\n                    var data = {\n                        paymentID: data.paymentID,\n                        payerID: data.payerID\n                    };\n\n                    // Make a call to your server to execute the payment\n                    return paypal.request.post(EXECUTE_URL, data)\n                        .then(function (res) {\n                            window.alert(\'Payment Complete!\');\n                        });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
     }
 };
 
@@ -28393,6 +28404,8 @@ var checkout = exports.checkout = {
 
     fullName: 'Express Checkout Custom Button',
 
+    nosidebar: false,
+
     intro: _react2.default.createElement(
         'p',
         null,
@@ -28406,53 +28419,12 @@ var checkout = exports.checkout = {
     ),
 
     code: function code(ctx) {
-        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: \'checkout\',\n                    size:  \'small\',    // small | medium | large | responsive\n                    shape: \'pill\',     // pill | rect\n                    color: \'blue\'      // gold | blue | silver | black\n                },\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    \'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R\',\n                    production: \'<insert production client id>\'\n                },\n\n                payment: function(data, actions) {\n                    return actions.payment.create({\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    });\n                },\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        window.alert(\'Payment Complete!\');\n                    });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
+        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: \'checkout\',\n                    size:  \'small\',    // small | medium | large | responsive\n                    shape: \'pill\',     // pill | rect\n                    color: \'blue\'      // gold | blue | silver | black\n                },\n\n                // payment() is called when the button is clicked\n                payment: function() {\n\n                    // Set up a url on your server to create the payment\n                    var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n\n                    // Make a call to your server to set up the payment\n                    return paypal.request.post(CREATE_URL)\n                        .then(function(res) {\n                            return res.paymentID;\n                        });\n                },\n\n                // onAuthorize() is called when the buyer approves the payment\n                onAuthorize: function(data, actions) {\n\n                    // Set up a url on your server to execute the payment\n                    var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n\n                    // Set up the data you need to pass to your server\n                    var data = {\n                        paymentID: data.paymentID,\n                        payerID: data.payerID\n                    };\n\n                    // Make a call to your server to execute the payment\n                    return paypal.request.post(EXECUTE_URL, data)\n                        .then(function (res) {\n                            window.alert(\'Payment Complete!\');\n                        });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
     }
 };
 
 /***/ }),
 /* 253 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-exports.client = undefined;
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var client = exports.client = {
-
-    slug: 'client',
-
-    name: 'Client Side REST',
-
-    fullName: 'Client Side Express Checkout using REST',
-
-    intro: _react2.default.createElement(
-        'p',
-        null,
-        'Create a ',
-        _react2.default.createElement(
-            'b',
-            null,
-            'PayPal Checkout'
-        ),
-        ' button and accept payments from the client-side using the PayPal REST API, with no server required.'
-    ),
-
-    code: function code(ctx) {
-        return '\n        <!DOCTYPE html>\n\n        <head>\n            <meta http-equiv="X-UA-Compatible" content="IE=edge" />\n            <meta name="viewport" content="width=device-width, initial-scale=1">\n            <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n        </head>\n\n        <body>\n            <div id="paypal-button-container"></div>\n\n            <script>\n                paypal.Button.render({\n\n                    env: \'' + ctx.env + '\', // sandbox | production\n\n                    // PayPal Client IDs - replace with your own\n                    // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n                    client: {\n                        sandbox:    \'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R\',\n                        production: \'<insert production client id>\'\n                    },\n\n                    // Show the buyer a \'Pay Now\' button in the checkout flow\n                    commit: true,\n\n                    // payment() is called when the button is clicked\n                    payment: function(data, actions) {\n\n                        // Make a call to the REST api to create the payment\n                        return actions.payment.create({\n                            payment: {\n                                transactions: [\n                                    {\n                                        amount: { total: \'0.01\', currency: \'USD\' }\n                                    }\n                                ]\n                            }\n                        });\n                    },\n\n                    // onAuthorize() is called when the buyer approves the payment\n                    onAuthorize: function(data, actions) {\n\n                        // Make a call to the REST api to execute the payment\n                        return actions.payment.execute().then(function() {\n                            window.alert(\'Payment Complete!\');\n                        });\n                    }\n\n                }, \'#paypal-button-container\');\n\n            </script>\n        </body>\n    ';
-    }
-};
-
-/***/ }),
-/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28475,6 +28447,8 @@ var confirm = exports.confirm = {
 
     fullName: 'Express Checkout with Confirmation',
 
+    nosidebar: false,
+
     intro: _react2.default.createElement(
         'p',
         null,
@@ -28482,12 +28456,12 @@ var confirm = exports.confirm = {
     ),
 
     code: function code(ctx) {
-        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <div id="confirm" class="hidden">\n            <div>Ship to:</div>\n            <div><span id="recipient"></span>, <span id="line1"></span>, <span id="city"></span></div>\n            <div><span id="state"></span>, <span id="zip"></span>, <span id="country"></span></div>\n\n            <button id="confirmButton">Complete Payment</button>\n        </div>\n\n        <div id="thanks" class="hidden">\n            Thanks, <span id="thanksname"></span>!\n        </div>\n\n        <script>\n            paypal.Button.render({\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                client: {\n                    sandbox:    \'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R\',\n                    production: \'<insert production client id>\'\n                },\n\n                payment: function(data, actions) {\n                    return actions.payment.create({\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Get the payment details\n\n                    return actions.payment.get().then(function(data) {\n\n                        // Display the payment details and a confirmation button\n\n                        var shipping = data.payer.payer_info.shipping_address;\n\n                        document.querySelector(\'#recipient\').innerText = shipping.recipient_name;\n                        document.querySelector(\'#line1\').innerText     = shipping.line1;\n                        document.querySelector(\'#city\').innerText      = shipping.city;\n                        document.querySelector(\'#state\').innerText     = shipping.state;\n                        document.querySelector(\'#zip\').innerText       = shipping.postal_code;\n                        document.querySelector(\'#country\').innerText   = shipping.country_code;\n\n                        document.querySelector(\'#paypal-button-container\').style.display = \'none\';\n                        document.querySelector(\'#confirm\').style.display = \'block\';\n\n                        // Listen for click on confirm button\n\n                        document.querySelector(\'#confirmButton\').addEventListener(\'click\', function() {\n\n                            // Disable the button and show a loading message\n\n                            document.querySelector(\'#confirm\').innerText = \'Loading...\';\n                            document.querySelector(\'#confirm\').disabled = true;\n\n                            // Execute the payment\n\n                            return actions.payment.execute().then(function() {\n\n                                // Show a thank-you note\n\n                                document.querySelector(\'#thanksname\').innerText = shipping.recipient_name;\n\n                                document.querySelector(\'#confirm\').style.display = \'none\';\n                                document.querySelector(\'#thanks\').style.display = \'block\';\n                            });\n                        });\n                    });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
+        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <div id="confirm" class="hidden">\n            <div>Ship to:</div>\n            <div><span id="recipient"></span>, <span id="line1"></span>, <span id="city"></span></div>\n            <div><span id="state"></span>, <span id="zip"></span>, <span id="country"></span></div>\n\n            <button id="confirmButton">Complete Payment</button>\n        </div>\n\n        <div id="thanks" class="hidden">\n            Thanks, <span id="thanksname"></span>!\n        </div>\n\n        <script>\n            paypal.Button.render({\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                payment: function(data, actions) {\n                    // Set up a url on your server to create the payment\n                    var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n                    \n                    var data = {\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    };\n                    \n                    // Make a call to your server to set up the payment\n                    return paypal.request.post(CREATE_URL, data)\n                        .then(function(res) {\n                            return res.paymentID;\n                        });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n                  \n                    // Set up a url on your server to execute the payment\n                    var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n\n                    // Set up the data you need to pass to your server\n                    var data = {\n                        paymentID: data.paymentID,\n                        payerID: data.payerID\n                    };\n\n                    // Get the payment details\n\n                    return actions.payment.get().then(function(data) {\n\n                        // Display the payment details and a confirmation button\n\n                        var shipping = data.payer.payer_info.shipping_address;\n\n                        document.querySelector(\'#recipient\').innerText = shipping.recipient_name;\n                        document.querySelector(\'#line1\').innerText     = shipping.line1;\n                        document.querySelector(\'#city\').innerText      = shipping.city;\n                        document.querySelector(\'#state\').innerText     = shipping.state;\n                        document.querySelector(\'#zip\').innerText       = shipping.postal_code;\n                        document.querySelector(\'#country\').innerText   = shipping.country_code;\n\n                        document.querySelector(\'#paypal-button-container\').style.display = \'none\';\n                        document.querySelector(\'#confirm\').style.display = \'block\';\n\n                        // Listen for click on confirm button\n\n                        document.querySelector(\'#confirmButton\').addEventListener(\'click\', function() {\n\n                            // Disable the button and show a loading message\n\n                            document.querySelector(\'#confirm\').innerText = \'Loading...\';\n                            document.querySelector(\'#confirm\').disabled = true;\n\n                            // Make a call to your server to execute the payment\n                            return paypal.request.post(EXECUTE_URL, data).then(function (res) {\n                            \n                                // Show a thank-you note\n                                \n                                document.querySelector(\'#thanksname\').innerText = shipping.recipient_name;\n\n                                document.querySelector(\'#confirm\').style.display = \'none\';\n                                document.querySelector(\'#thanks\').style.display = \'block\';\n                            });\n\n                        });\n                    });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n        ';
     }
 };
 
 /***/ }),
-/* 255 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28510,6 +28484,8 @@ var credit = exports.credit = {
 
     fullName: 'Express Checkout Custom Credit Button',
 
+    nosidebar: false,
+
     intro: _react2.default.createElement(
         'p',
         null,
@@ -28523,12 +28499,12 @@ var credit = exports.credit = {
     ),
 
     code: function code(ctx) {
-        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: \'credit\',\n                    size:  \'small\', // small | medium | large | responsive\n                    shape: \'rect\',   // pill | rect\n                    color: \'creditblue\'   // creditblue | black\n                },\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    \'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R\',\n                    production: \'<insert production client id>\'\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function(data, actions) {\n\n                    // Set up a payment and make credit the landing page\n\n                    return actions.payment.create({\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ],\n\n                            payer: {\n                                payment_method: \'paypal\',\n                                external_selected_funding_instrument_type: \'CREDIT\'\n                            }\n                        }\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        window.alert(\'Payment Complete!\');\n                    });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
+        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: \'credit\',\n                    size:  \'small\', // small | medium | large | responsive\n                    shape: \'rect\',   // pill | rect\n                    color: \'creditblue\'   // creditblue | black\n                },\n        \n                // Wait for the PayPal button to be clicked\n                \n                payment: function(data, actions) {\n\n                    // Set up a url on your server to create the payment\n                    var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n                    \n                    var data = {\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ],\n\n                            payer: {\n                                payment_method: \'paypal\',\n                                external_selected_funding_instrument_type: \'CREDIT\'\n                            }\n                        }\n                    };\n                    \n                    // Make a call to your server to set up the payment\n                    return paypal.request.post(CREATE_URL, data)\n                        .then(function(res) {\n                            return res.paymentID;\n                        });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Set up a url on your server to execute the payment\n                    var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n\n                    // Set up the data you need to pass to your server\n                    var data = {\n                        paymentID: data.paymentID,\n                        payerID: data.payerID\n                    };\n\n                    // Make a call to your server to execute the payment\n                    return paypal.request.post(EXECUTE_URL, data)\n                        .then(function (res) {\n                            window.alert(\'Payment Complete!\');\n                        });\n                },\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
     }
 };
 
 /***/ }),
-/* 256 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28551,6 +28527,8 @@ var experience = exports.experience = {
 
     fullName: 'Client Side Express Checkout Experience Profiles',
 
+    nosidebar: false,
+
     intro: _react2.default.createElement(
         'p',
         null,
@@ -28558,12 +28536,12 @@ var experience = exports.experience = {
     ),
 
     code: function code(ctx) {
-        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    \'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R\',\n                    production: \'<insert production client id>\'\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function(data, actions) {\n\n                    // Make a client-side call to the REST api to create the payment\n\n                    return actions.payment.create({\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        },\n\n                        experience: {\n                            input_fields: {\n                                no_shipping: 1\n                            }\n                        }\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Execute the payment\n\n                    return actions.payment.execute().then(function() {\n                        window.alert(\'Payment Complete!\');\n                    });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
+        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n        \n                // Wait for the PayPal button to be clicked\n                \n                payment: function(data, actions) {\n\n                    // Set up a url on your server to create the payment\n                    var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n                    \n                    var data = {\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        },\n\n                        experience: {\n                            input_fields: {\n                                no_shipping: 1\n                            }\n                        }\n                    };\n                    \n                    // Make a call to your server to set up the payment\n                    return paypal.request.post(CREATE_URL, data)\n                        .then(function(res) {\n                            return res.paymentID;\n                        });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Set up a url on your server to execute the payment\n                    var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n\n                    // Set up the data you need to pass to your server\n                    var data = {\n                        paymentID: data.paymentID,\n                        payerID: data.payerID\n                    };\n\n                    // Make a call to your server to execute the payment\n                    return paypal.request.post(EXECUTE_URL, data)\n                        .then(function (res) {\n                            window.alert(\'Payment Complete!\');\n                        });\n                },\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
     }
 };
 
 /***/ }),
-/* 257 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28586,6 +28564,8 @@ var generic = exports.generic = {
 
     fullName: 'Express Generic Custom Button',
 
+    nosidebar: false,
+
     intro: _react2.default.createElement(
         'p',
         null,
@@ -28599,12 +28579,12 @@ var generic = exports.generic = {
     ),
 
     code: function code(ctx) {
-        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: \'generic\',\n                    size:  \'medium\',    // small | medium | large | responsive\n                    shape: \'rect\',     // pill | rect\n                    color: \'black\',     // gold | blue | silver | black\n                    tagline: false    \n                },\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    \'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R\',\n                    production: \'<insert production client id>\'\n                },\n\n                payment: function(data, actions) {\n                    return actions.payment.create({\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    });\n                },\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        window.alert(\'Payment Complete!\');\n                    });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
+        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: \'generic\',\n                    size:  \'medium\',    // small | medium | large | responsive\n                    shape: \'rect\',     // pill | rect\n                    color: \'black\',     // gold | blue | silver | black\n                    tagline: false    \n                },\n        \n                // Wait for the PayPal button to be clicked\n                \n                payment: function(data, actions) {\n\n                    // Set up a url on your server to create the payment\n                    var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n                    \n                    var data = {\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    };\n                    \n                    // Make a call to your server to set up the payment\n                    return paypal.request.post(CREATE_URL, data)\n                        .then(function(res) {\n                            return res.paymentID;\n                        });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Set up a url on your server to execute the payment\n                    var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n\n                    // Set up the data you need to pass to your server\n                    var data = {\n                        paymentID: data.paymentID,\n                        payerID: data.payerID\n                    };\n\n                    // Make a call to your server to execute the payment\n                    return paypal.request.post(EXECUTE_URL, data)\n                        .then(function (res) {\n                            window.alert(\'Payment Complete!\');\n                        });\n                },\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
     }
 };
 
 /***/ }),
-/* 258 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28612,19 +28592,7 @@ var generic = exports.generic = {
 
 exports.__esModule = true;
 
-var _client = __webpack_require__(253);
-
-Object.keys(_client).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _client[key];
-    }
-  });
-});
-
-var _server = __webpack_require__(262);
+var _server = __webpack_require__(261);
 
 Object.keys(_server).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -28632,18 +28600,6 @@ Object.keys(_server).forEach(function (key) {
     enumerable: true,
     get: function get() {
       return _server[key];
-    }
-  });
-});
-
-var _braintree = __webpack_require__(249);
-
-Object.keys(_braintree).forEach(function (key) {
-  if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
-    enumerable: true,
-    get: function get() {
-      return _braintree[key];
     }
   });
 });
@@ -28660,7 +28616,7 @@ Object.keys(_checkout).forEach(function (key) {
   });
 });
 
-var _credit = __webpack_require__(255);
+var _credit = __webpack_require__(254);
 
 Object.keys(_credit).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -28672,7 +28628,7 @@ Object.keys(_credit).forEach(function (key) {
   });
 });
 
-var _pay = __webpack_require__(260);
+var _pay = __webpack_require__(259);
 
 Object.keys(_pay).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -28680,6 +28636,18 @@ Object.keys(_pay).forEach(function (key) {
     enumerable: true,
     get: function get() {
       return _pay[key];
+    }
+  });
+});
+
+var _api = __webpack_require__(249);
+
+Object.keys(_api).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _api[key];
     }
   });
 });
@@ -28696,7 +28664,7 @@ Object.keys(_buynow).forEach(function (key) {
   });
 });
 
-var _generic = __webpack_require__(257);
+var _generic = __webpack_require__(256);
 
 Object.keys(_generic).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -28708,7 +28676,7 @@ Object.keys(_generic).forEach(function (key) {
   });
 });
 
-var _responsive = __webpack_require__(261);
+var _responsive = __webpack_require__(260);
 
 Object.keys(_responsive).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -28720,7 +28688,7 @@ Object.keys(_responsive).forEach(function (key) {
   });
 });
 
-var _mark = __webpack_require__(259);
+var _mark = __webpack_require__(258);
 
 Object.keys(_mark).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -28732,7 +28700,7 @@ Object.keys(_mark).forEach(function (key) {
   });
 });
 
-var _confirm = __webpack_require__(254);
+var _confirm = __webpack_require__(253);
 
 Object.keys(_confirm).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -28744,7 +28712,7 @@ Object.keys(_confirm).forEach(function (key) {
   });
 });
 
-var _validation = __webpack_require__(263);
+var _validation = __webpack_require__(262);
 
 Object.keys(_validation).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -28768,7 +28736,7 @@ Object.keys(_button).forEach(function (key) {
   });
 });
 
-var _experience = __webpack_require__(256);
+var _experience = __webpack_require__(255);
 
 Object.keys(_experience).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
@@ -28781,7 +28749,7 @@ Object.keys(_experience).forEach(function (key) {
 });
 
 /***/ }),
-/* 259 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28817,12 +28785,12 @@ var mark = exports.mark = {
     ),
 
     code: function code(ctx) {
-        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <!-- Render the radio fields and button containers -->\n\n        <label>\n            <input type="radio" name="payment-option" value="paypal" checked>\n            <img src="' + ctx.baseURL + '/static/img/paypal-mark.jpg" alt="Pay with Paypal">\n        </label>\n\n        <label>\n            <input type="radio" name="payment-option" value="card">\n            <img src="' + ctx.baseURL + '/static/img/card-mark.png" alt="Accepting Visa, Mastercard, Discover and American Express">\n        </label>\n\n        <div id="paypal-button-container"></div>\n        <div id="card-button-container" class="hidden"><button>Continue</button></div>\n\n        <script>\n\n            // Helper functions\n\n            function getElements(el) {\n                return Array.prototype.slice.call(document.querySelectorAll(el));\n            }\n\n            function hideElement(el) {\n                document.body.querySelector(el).style.display = \'none\';\n            }\n\n            function showElement(el) {\n                document.body.querySelector(el).style.display = \'block\';\n            }\n\n            // Listen for changes to the radio fields\n\n            getElements(\'input[name=payment-option]\').forEach(function(el) {\n                el.addEventListener(\'change\', function(event) {\n\n                    // If PayPal is selected, show the PayPal button\n\n                    if (event.target.value === \'paypal\') {\n                        hideElement(\'#card-button-container\');\n                        showElement(\'#paypal-button-container\');\n                    }\n\n                    // If Card is selected, show the standard continue button\n\n                    if (event.target.value === \'card\') {\n                        showElement(\'#card-button-container\');\n                        hideElement(\'#paypal-button-container\');\n                    }\n                });\n            });\n\n            // Hide Non-PayPal button by default\n\n            hideElement(\'#card-button-container\');\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                env: \'' + ctx.env + '\',\n\n                client: {\n                    sandbox:    \'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R\',\n                    production: \'<insert production client id>\'\n                },\n\n                payment: function(data, actions) {\n                    return actions.payment.create({\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    });\n                },\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        window.alert(\'Payment Complete!\');\n                    });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
+        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <!-- Render the radio fields and button containers -->\n\n        <label>\n            <input type="radio" name="payment-option" value="paypal" checked>\n            <img src="' + ctx.baseURL + '/static/img/paypal-mark.jpg" alt="Pay with Paypal">\n        </label>\n\n        <label>\n            <input type="radio" name="payment-option" value="card">\n            <img src="' + ctx.baseURL + '/static/img/card-mark.png" alt="Accepting Visa, Mastercard, Discover and American Express">\n        </label>\n\n        <div id="paypal-button-container"></div>\n        <div id="card-button-container" class="hidden"><button>Continue</button></div>\n\n        <script>\n\n            // Helper functions\n\n            function getElements(el) {\n                return Array.prototype.slice.call(document.querySelectorAll(el));\n            }\n\n            function hideElement(el) {\n                document.body.querySelector(el).style.display = \'none\';\n            }\n\n            function showElement(el) {\n                document.body.querySelector(el).style.display = \'block\';\n            }\n\n            // Listen for changes to the radio fields\n\n            getElements(\'input[name=payment-option]\').forEach(function(el) {\n                el.addEventListener(\'change\', function(event) {\n\n                    // If PayPal is selected, show the PayPal button\n\n                    if (event.target.value === \'paypal\') {\n                        hideElement(\'#card-button-container\');\n                        showElement(\'#paypal-button-container\');\n                    }\n\n                    // If Card is selected, show the standard continue button\n\n                    if (event.target.value === \'card\') {\n                        showElement(\'#card-button-container\');\n                        hideElement(\'#paypal-button-container\');\n                    }\n                });\n            });\n\n            // Hide Non-PayPal button by default\n\n            hideElement(\'#card-button-container\');\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                env: \'' + ctx.env + '\',\n        \n                // Wait for the PayPal button to be clicked\n                \n                payment: function(data, actions) {\n\n                    // Set up a url on your server to create the payment\n                    var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n                    \n                    var data = {\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    };\n                    \n                    // Make a call to your server to set up the payment\n                    return paypal.request.post(CREATE_URL, data)\n                        .then(function(res) {\n                            return res.paymentID;\n                        });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Set up a url on your server to execute the payment\n                    var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n\n                    // Set up the data you need to pass to your server\n                    var data = {\n                        paymentID: data.paymentID,\n                        payerID: data.payerID\n                    };\n\n                    // Make a call to your server to execute the payment\n                    return paypal.request.post(EXECUTE_URL, data)\n                        .then(function (res) {\n                            window.alert(\'Payment Complete!\');\n                        });\n                },\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
     }
 };
 
 /***/ }),
-/* 260 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28858,12 +28826,12 @@ var pay = exports.pay = {
     ),
 
     code: function code(ctx) {
-        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: \'pay\',\n                    size:  \'small\', // small | medium | large | responsive\n                    shape: \'rect\',   // pill | rect\n                    color: \'gold\'   // gold | blue | silver | black\n                },\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    \'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R\',\n                    production: \'<insert production client id>\'\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function(data, actions) {\n                    return actions.payment.create({\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        window.alert(\'Payment Complete!\');\n                    });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
+        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // Specify the style of the button\n\n                style: {\n                    label: \'pay\',\n                    size:  \'small\', // small | medium | large | responsive\n                    shape: \'rect\',   // pill | rect\n                    color: \'gold\'   // gold | blue | silver | black\n                },\n        \n                // Wait for the PayPal button to be clicked\n                \n                payment: function(data, actions) {\n\n                    // Set up a url on your server to create the payment\n                    var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n                    \n                    var data = {\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    };\n                    \n                    // Make a call to your server to set up the payment\n                    return paypal.request.post(CREATE_URL, data)\n                        .then(function(res) {\n                            return res.paymentID;\n                        });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Set up a url on your server to execute the payment\n                    var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n\n                    // Set up the data you need to pass to your server\n                    var data = {\n                        paymentID: data.paymentID,\n                        payerID: data.payerID\n                    };\n\n                    // Make a call to your server to execute the payment\n                    return paypal.request.post(EXECUTE_URL, data)\n                        .then(function (res) {\n                            window.alert(\'Payment Complete!\');\n                        });\n                },\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
     }
 };
 
 /***/ }),
-/* 261 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28893,12 +28861,12 @@ var responsive = exports.responsive = {
     ),
 
     code: function code(ctx) {
-        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <style>\n            \n            /* Media query for mobile viewport */\n            @media screen and (max-width: 400px) {\n                #paypal-button-container {\n                    width: 100%;\n                }\n            }\n            \n            /* Media query for desktop viewport */\n            @media screen and (min-width: 400px) {\n                #paypal-button-container {\n                    width: 250px;\n                    display: inline-block;\n                }\n            }\n            \n        </style>\n        \n        <div id="paypal-button-container"></div>\n        \n        <script>\n        \n            paypal.Button.render({\n                \n                // Set your environment\n        \n                env: \'' + ctx.env + '\', // sandbox | production\n        \n                // Specify the style of the button\n        \n                style: {\n                    label: \'checkout\',  // checkout | credit | pay | buynow | generic\n                    size:  \'responsive\', // small | medium | large | responsive\n                    shape: \'pill\',   // pill | rect\n                    color: \'gold\'   // gold | blue | silver | black\n                },\n        \n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n        \n                client: {\n                    sandbox:    \'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R\',\n                    production: \'<insert production client id>\'\n                },\n        \n                // Wait for the PayPal button to be clicked\n        \n                payment: function(data, actions) {\n                    return actions.payment.create({\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    });\n                },\n        \n                // Wait for the payment to be authorized by the customer\n        \n                onAuthorize: function(data, actions) {\n                    return actions.payment.execute().then(function() {\n                        window.alert(\'Payment Complete!\');\n                    });\n                }\n            \n            }, \'#paypal-button-container\');\n        \n        </script>\n\n    ';
+        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <style>\n            \n            /* Media query for mobile viewport */\n            @media screen and (max-width: 400px) {\n                #paypal-button-container {\n                    width: 100%;\n                }\n            }\n            \n            /* Media query for desktop viewport */\n            @media screen and (min-width: 400px) {\n                #paypal-button-container {\n                    width: 250px;\n                    display: inline-block;\n                }\n            }\n            \n        </style>\n        \n        <div id="paypal-button-container"></div>\n        \n        <script>\n        \n            paypal.Button.render({\n                \n                // Set your environment\n        \n                env: \'' + ctx.env + '\', // sandbox | production\n        \n                // Specify the style of the button\n        \n                style: {\n                    label: \'checkout\',  // checkout | credit | pay | buynow | generic\n                    size:  \'responsive\', // small | medium | large | responsive\n                    shape: \'pill\',   // pill | rect\n                    color: \'gold\'   // gold | blue | silver | black\n                },\n        \n                // Wait for the PayPal button to be clicked\n                \n                payment: function(data, actions) {\n\n                    // Set up a url on your server to create the payment\n                    var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n                    \n                    var data = {\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    };\n                    \n                    // Make a call to your server to set up the payment\n                    return paypal.request.post(CREATE_URL, data)\n                        .then(function(res) {\n                            return res.paymentID;\n                        });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Set up a url on your server to execute the payment\n                    var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n\n                    // Set up the data you need to pass to your server\n                    var data = {\n                        paymentID: data.paymentID,\n                        payerID: data.payerID\n                    };\n\n                    // Make a call to your server to execute the payment\n                    return paypal.request.post(EXECUTE_URL, data)\n                        .then(function (res) {\n                            window.alert(\'Payment Complete!\');\n                        });\n                },\n            \n            }, \'#paypal-button-container\');\n        \n        </script>\n\n    ';
     }
 };
 
 /***/ }),
-/* 262 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28933,13 +28901,15 @@ var server = exports.server = {
         ' button and accept payments, by calling the PayPal REST API from your server.'
     ),
 
+    nosidebar: false,
+
     code: function code(ctx) {
         return '\n        <!DOCTYPE html>\n\n        <head>\n            <meta http-equiv="X-UA-Compatible" content="IE=edge" />\n            <meta name="viewport" content="width=device-width, initial-scale=1">\n            <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n        </head>\n\n        <body>\n            <div id="paypal-button-container"></div>\n\n            <script>\n                paypal.Button.render({\n\n                    env: \'' + ctx.env + '\', // sandbox | production\n\n                    // Show the buyer a \'Pay Now\' button in the checkout flow\n                    commit: true,\n\n                    // payment() is called when the button is clicked\n                    payment: function() {\n\n                        // Set up a url on your server to create the payment\n                        var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n\n                        // Make a call to your server to set up the payment\n                        return paypal.request.post(CREATE_URL)\n                            .then(function(res) {\n                                return res.paymentID;\n                            });\n                    },\n\n                    // onAuthorize() is called when the buyer approves the payment\n                    onAuthorize: function(data, actions) {\n\n                        // Set up a url on your server to execute the payment\n                        var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n\n                        // Set up the data you need to pass to your server\n                        var data = {\n                            paymentID: data.paymentID,\n                            payerID: data.payerID\n                        };\n\n                        // Make a call to your server to execute the payment\n                        return paypal.request.post(EXECUTE_URL, data)\n                            .then(function (res) {\n                                window.alert(\'Payment Complete!\');\n                            });\n                    }\n\n                }, \'#paypal-button-container\');\n            </script>\n        </body>\n    ';
     }
 };
 
 /***/ }),
-/* 263 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28969,9 +28939,10 @@ var validation = exports.validation = {
     ),
 
     code: function code(ctx) {
-        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <p id="msg" class="hidden error">Please check the checkbox</p>\n\n        <p>\n            <label><input id="check" type="checkbox"> Check here to continue</label>\n        </p>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            function isValid() {\n                return document.querySelector(\'#check\').checked;\n            }\n\n            function onChangeCheckbox(handler) {\n                document.querySelector(\'#check\').addEventListener(\'change\', handler);\n            }\n\n            function toggleValidationMessage() {\n                document.querySelector(\'#msg\').style.display = (isValid() ? \'none\' : \'block\');\n            }\n\n            function toggleButton(actions) {\n                return isValid() ? actions.enable() : actions.disable();\n            }\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                // PayPal Client IDs - replace with your own\n                // Create a PayPal app: https://developer.paypal.com/developer/applications/create\n\n                client: {\n                    sandbox:    \'AZDxjDScFpQtjWTOUtWKbyN_bDt4OgqaF4eYXlewfBP4-8aqX3PiV8e1GWU6liB2CUXlkA59kJXE7M6R\',\n                    production: \'<insert production client id>\'\n                },\n\n                validate: function(actions) {\n                    toggleButton(actions);\n\n                    onChangeCheckbox(function() {\n                        toggleButton(actions);\n                    });\n                },\n\n                onClick: function() {\n                    toggleValidationMessage();\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function(data, actions) {\n\n                    // Make a client-side call to the REST api to create the payment\n\n                    return actions.payment.create({\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Execute the payment\n\n                    return actions.payment.execute().then(function() {\n                        window.alert(\'Payment Complete!\');\n                    });\n                }\n\n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
+        return '\n        <script src="https://www.paypalobjects.com/api/checkout.js"></script>\n\n        <p id="msg" class="hidden error">Please check the checkbox</p>\n\n        <p>\n            <label><input id="check" type="checkbox"> Check here to continue</label>\n        </p>\n\n        <div id="paypal-button-container"></div>\n\n        <script>\n\n            function isValid() {\n                return document.querySelector(\'#check\').checked;\n            }\n\n            function onChangeCheckbox(handler) {\n                document.querySelector(\'#check\').addEventListener(\'change\', handler);\n            }\n\n            function toggleValidationMessage() {\n                document.querySelector(\'#msg\').style.display = (isValid() ? \'none\' : \'block\');\n            }\n\n            function toggleButton(actions) {\n                return isValid() ? actions.enable() : actions.disable();\n            }\n\n            // Render the PayPal button\n\n            paypal.Button.render({\n\n                // Set your environment\n\n                env: \'' + ctx.env + '\', // sandbox | production\n\n                validate: function(actions) {\n                    toggleButton(actions);\n\n                    onChangeCheckbox(function() {\n                        toggleButton(actions);\n                    });\n                },\n\n                onClick: function() {\n                    toggleValidationMessage();\n                },\n\n                // Wait for the PayPal button to be clicked\n\n                payment: function(data, actions) {\n\n                    // Set up a url on your server to create the payment\n                    var CREATE_URL = \'' + ctx.baseURL + '/api/paypal/payment/create/\';\n                    \n                    var data = {\n                        payment: {\n                            transactions: [\n                                {\n                                    amount: { total: \'0.01\', currency: \'USD\' }\n                                }\n                            ]\n                        }\n                    };\n                    \n                    // Make a call to your server to set up the payment\n                    return paypal.request.post(CREATE_URL, data)\n                        .then(function(res) {\n                            return res.paymentID;\n                        });\n                },\n\n                // Wait for the payment to be authorized by the customer\n\n                onAuthorize: function(data, actions) {\n\n                    // Set up a url on your server to execute the payment\n                    var EXECUTE_URL = \'' + ctx.baseURL + '/api/paypal/payment/execute/\';\n\n                    // Set up the data you need to pass to your server\n                    var data = {\n                        paymentID: data.paymentID,\n                        payerID: data.payerID\n                    };\n\n                    // Make a call to your server to execute the payment\n                    return paypal.request.post(EXECUTE_URL, data)\n                        .then(function (res) {\n                            window.alert(\'Payment Complete!\');\n                        });\n                },\n                \n            }, \'#paypal-button-container\');\n\n        </script>\n    ';
     }
 };
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=demo.js.map

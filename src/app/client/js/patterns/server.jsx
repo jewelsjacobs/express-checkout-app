@@ -13,6 +13,8 @@ export let server = {
         <p>Create a <b>PayPal Checkout</b> button and accept payments, by calling the PayPal REST API from your server.</p>
     ),
 
+    nosidebar: false,
+
     code: (ctx) => `
         <!DOCTYPE html>
 
