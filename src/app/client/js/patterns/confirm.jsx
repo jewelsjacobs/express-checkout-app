@@ -49,18 +49,8 @@ export let confirm = {
                         // Set up a url on your server to create the payment
                         var CREATE_URL = '${ctx.baseURL}/api/paypal/payment/create/';
                         
-                        var data = {
-                            payment: {
-                                transactions: [
-                                    {
-                                        amount: { total: '0.01', currency: 'USD' }
-                                    }
-                                ]
-                            }
-                        };
-                        
                         // Make a call to your server to set up the payment
-                        return paypal.request.post(CREATE_URL, data)
+                        return paypal.request.post(CREATE_URL)
                             .then(function(res) {
                                 return res.paymentID;
                             });
@@ -81,11 +71,11 @@ export let confirm = {
     
                         // Get the payment details
     
-                        return actions.payment.get().then(function(data) {
+                        return actions.payment.get().then(function(paymentData) {
     
                             // Display the payment details and a confirmation button
     
-                            var shipping = data.payer.payer_info.shipping_address;
+                            var shipping = paymentData.payer.payer_info.shipping_address;
     
                             document.querySelector('#recipient').innerText = shipping.recipient_name;
                             document.querySelector('#line1').innerText     = shipping.line1;

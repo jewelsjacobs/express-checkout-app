@@ -79,7 +79,7 @@ export let checkout = {
                     }
     
                 }, '#paypal-button-container');
-                </script>
+            </script>
         </body>
     `
 };

@@ -52,18 +52,8 @@ export let pay = {
                         // Set up a url on your server to create the payment
                         var CREATE_URL = '${ctx.baseURL}/api/paypal/payment/create/';
                         
-                        var data = {
-                            payment: {
-                                transactions: [
-                                    {
-                                        amount: { total: '0.01', currency: 'USD' }
-                                    }
-                                ]
-                            }
-                        };
-                        
                         // Make a call to your server to set up the payment
-                        return paypal.request.post(CREATE_URL, data)
+                        return paypal.request.post(CREATE_URL)
                             .then(function(res) {
                                 return res.paymentID;
                             });
