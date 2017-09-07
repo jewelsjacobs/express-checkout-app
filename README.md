@@ -55,7 +55,7 @@ Hoping to allow developers to quickly generate an Express Checkout Server REST A
 
 I initially started creating a Postman collection with documentation for the PayPal Authentication, Payment Experience, and Payment APIs.  My thought was I could then import them into the APIMATIC Developerless API Portal and then everything would magically happen.
 
-Unfortunately it took way to much time getting Postman to work with the Auth API and all of the other APIs. I had to use the Postman built in Auth 2.0 tool. I couldn't get all of the API methods documented: https://dark-firefly-4445.postman.co/docs/collection/view/619630-a0f0663c-4ae9-ab03-6621-cba996c294fb
+Unfortunately it took way to much time getting Postman to work with the Auth API and all of the other APIs. I had to use the Postman built in Auth 2.0 tool. I couldn't get all of the API methods documented: https://documenter.getpostman.com/view/619630/paypal-api/6tZ5kLY
 
 Importing the collection into APIMATIC was a mess so I wound up further scaling down to just the Payment create and execute methods. The result was not exactly what I was looking for.
 
