@@ -64,7 +64,7 @@ Ideally an embedded postman or maybe even a tweakable online mock server would b
 ### What else?
 I would have liked to have done interactive video training for every SDK to create samples with buttons. Code samples provided. I also would LOVE to set up a REPL based training platform like Codeacademy [(Watson API on Codeacademy)](https://www.codecademy.com/learn/ibm-watson)
 
-# Ideas I Had on how to Engage Developers in PayPal Products
+# Ideas I had on how to engage developers in PayPal products
 After 4 years of running a Pair Programming meetup I found the main motivator for developers was to make money. Learn how to code for a startup or to get a job. PayPal products facilitate financial transactions. What if PayPal's Development OutReach reasources / assets focused on helping develolpers use PayPal products to make money?
 
 There were a couple of ideas I had along these lines:
