@@ -64,5 +64,15 @@ Ideally an embedded postman or maybe even a tweakable online mock server would b
 ### What else?
 I would have liked to have done interactive video training for every SDK to create samples with buttons. Code samples provided. I also would LOVE to set up a REPL based training platform like Codeacademy [(Watson API on Codeacademy)](https://www.codecademy.com/learn/ibm-watson)
 
+# Ideas I Had on how to Engage Developers in PayPal Products
+After 4 years of running a Pair Programming meetup I found the main motivator for developers was to make money. Learn how to code for a startup or to get a job. PayPal products facilitate financial transactions. What if PayPal's Development OutReach reasources / assets focused on helping develolpers use PayPal products to make money?
 
+There were a couple of ideas I had along these lines:
+* Help developers learn in-demand marketable skills
+* Help developers with tech startups
+
+## Ecommerce Lab
+I came across this cool site [Hack the Box](https://www.hackthebox.eu/). Although it was a subtle delivery, the free service offered role play in title, purpose, complexity and UI design. The appealing persona of the "hacker". The availability of a networked lab of fully functional VMs gave credability to the hands on experience. The progressive difficuly is an excellent learning device not to mention the gamification.  Learning a marketable skill and feeling cool the whole time.
+
+My idea was to create a similar environment with a startup mogul role play persona. The goal to create a complex full stack e-commerce site built to scale, dynamic SEO and content, marketing analytics, email system integration, the works. The goal being scale with customers and products. Make lots of $$$$$$. The environment would be a lab. All of PayPal's products would be utilized.  Devs would learn a TON of marketable skills and how to make money regardless of whether they choose to use eCommerce or not.
 
